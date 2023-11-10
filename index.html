@@ -176,22 +176,28 @@ var iddd = document.getElementById("canvas3");
 
 function insertData2() {
     // Get the ID value from the input field
-        // Create the data object with the IDD
-        idd = iddd.getContext("2d");
-        const datad = {
-            TicketNumber: idd
-        };
+    // Assuming iddd is your canvas element
+    ;
 
-        // Set the data in the Firebase Realtime Database
-        set(ref(database, "clicks/"), datad)
-            .then(() => {
-                alert("Data added successfully");
-            })
-            .catch((error) => {
-                alert(error.message);
-            });
+    // Check if idd is null, set it to a default value (e.g., 11)
+    if (idd === null) {
+      var  idd = 11; // Default value
     }
 
+    // Create the data object with the IDD
+    const datad = {
+        TicketNumber: idd
+    };
+
+    // Set the data in the Firebase Realtime Database
+    set(ref(database, "clicks/"), datad)
+        .then(() => {
+            alert("Data added successfully");
+        })
+        .catch((error) => {
+            alert(error.message);
+        });
+}
   
   var numbersOnly = ''
  function retrieveLastNode() {
