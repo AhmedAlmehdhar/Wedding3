@@ -174,34 +174,32 @@
         
 var idd = -1      
 function insertData2() {
-            // Get the ID value from the input field
-           
-           if (idd >= 3) {
-                alert("You have reached the maximum number of guests.");
-                return;
-            }
-            idd++
-            
+    // Get the ID value from the input field
 
-            
-           // Create the data object with the IDD
-            const datad = {
-           
-                TicketNumber: idd
-            };
+    if (idd >= 3) {
+        alert("You have reached the maximum number of guests.");
+        return;
+    }
 
-            // Set the data in the Firebase Realtime Database
-            
-            
-            set(ref(database, "clicks/"), datad)
-                .then(() => {
-                    alert("Data added successfully");
-                    
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
-        }
+    if (idd < 3) {
+        alert("green light");
+        idd++;
+
+        // Create the data object with the IDD
+        const datad = {
+            TicketNumber: idd
+        };
+
+        // Set the data in the Firebase Realtime Database
+        set(ref(database, "clicks/"), datad)
+            .then(() => {
+                alert("Data added successfully");
+            })
+            .catch((error) => {
+                alert(error.message);
+            });
+    }
+}
   
   var numbersOnly = ''
  function retrieveLastNode() {
