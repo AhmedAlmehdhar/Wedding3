@@ -172,20 +172,12 @@
                 });
         }
         
+var iddd = document.getElementById("canvas3");
 
 function insertData2() {
     // Get the ID value from the input field
-
-    if (idd >= 3) {
-        alert("You have reached the maximum number of guests.");
-        return;
-    }
-
-    if (idd < 3) {
-        alert("green light");
-        idd++;
-
         // Create the data object with the IDD
+        idd = iddd.text
         const datad = {
             TicketNumber: idd
         };
@@ -199,7 +191,7 @@ function insertData2() {
                 alert(error.message);
             });
     }
-}
+
   
   var numbersOnly = ''
  function retrieveLastNode() {
