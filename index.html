@@ -193,11 +193,12 @@ function insertData2() {
     set(ref(database, "clicks/"), datad)
         .then(() => {
             alert("Data added successfully");
+            idd++
         })
         .catch((error) => {
             alert(error.message);
         });
-idd++
+
 }
 
   
