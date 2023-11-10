@@ -172,36 +172,9 @@
                 });
         }
         
-var iddd = document.getElementById("canvas3");
+;
 
-function insertData2() {
-    // Get the ID value from the input field
-    // Assuming iddd is your canvas element
-    ;
 
-    // Check if idd is null, set it to a default value (e.g., 11)
-    if (idd === "") {
-      var  idd = 11; // Default value
-    }
-
-    // Create the data object with the IDD
-    const datad = {
-        TicketNumber: idd
-    };
-
-    // Set the data in the Firebase Realtime Database
-    set(ref(database, "clicks/"), datad)
-        .then(() => {
-            alert("Data added successfully");
-            idd++
-        })
-        .catch((error) => {
-            alert(error.message);
-        });
-
-}
-
-  
   var numbersOnly = ''
  function retrieveLastNode() {
   
@@ -290,7 +263,7 @@ function MaxMcounter (){
  
  
 document.getElementById("myButton").addEventListener("click", insertData);    
-       document.getElementById("myButton").addEventListener("click", insertData2);     
+     
        
    document.getElementById("myButton").addEventListener("click", retrieveLastNode); 
    
