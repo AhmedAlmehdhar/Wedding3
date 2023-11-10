@@ -177,7 +177,7 @@ var iddd = document.getElementById("canvas3");
 function insertData2() {
     // Get the ID value from the input field
         // Create the data object with the IDD
-        idd = iddd.text
+        idd = iddd.getContext("2d");
         const datad = {
             TicketNumber: idd
         };
@@ -319,7 +319,7 @@ function overlayText() {
             context.fillText(textInput, canvas.width / 2, canvas.height / 2);
  
        
- context.fillText(String(idd).padStart(3,"0"), canvas.width / 2, canvas.height / 5);
+ context.fillText(String('0').padStart(3,"0"), canvas.width / 2, canvas.height / 5);
  
  
 
