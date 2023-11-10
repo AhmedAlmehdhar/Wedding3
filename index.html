@@ -283,7 +283,7 @@ function MaxMcounter (){
     context.textAlign = "center";
     context.textBaseline = "middle";
     context.fillText(number, centerX, centerY);
-    window.addEventListener("load", updateClickCountBox);
+    
     ;
     
 
@@ -342,12 +342,7 @@ function overlayText() {
             newTab.document.write('<html><head><title>Image with Overlayed Text</title></head><body style="text-align: center;"><img src="' + imageDataURL + '"></body></html>');
             newTab.document.close();
 
-            var shareButton = document.getElementById("share-button");
-            shareButton.style.display = "block";
 
-            clickCount++;
-            localStorage.setItem('clickCount', clickCount.toString());
-            updateClickCountBox();
 
             // Scroll to the bottom of the page
             window.scroll({
@@ -367,8 +362,7 @@ document.getElementById("myButton").addEventListener("click", overlayText);
    
            
        
-        var maxClicks =10 ;
-        var clickCount = parseInt(localStorage.getItem('clickCount')) || 0;
+     
         var imageWidth;
         var imageHeight;
 
@@ -379,39 +373,8 @@ document.getElementById("myButton").addEventListener("click", overlayText);
         }
 
         window.onload = function() {
-            updateClickCountBox();
+            ;
         };
-
-        
-        function resetClicks() {
-            var resetPassword = prompt("Enter the reset password:");
-            // Replace 'password123' with your desired password
-            if (resetPassword === 'password123') {
-                clickCount = 0;
-                localStorage.setItem('clickCount', clickCount.toString());
-                updateClickCountBox();
-            } else {
-                alert("Incorrect password. Reset canceled.");
-            }
-        }
-
-        function updateClickCountBox() {
-            var clickCountBox = document.getElementById("click-count-box");
-            clickCountBox.style.display = "block";
-            var remainingClicks = maxClicks - clickCount;
-            if (remainingClicks === 1) {
-                clickCountBox.textContent = "1 Guest Left";
-            } else {
-                clickCountBox.textContent = remainingClicks + " Guests left";
-            }
-
-            var resetButton = document.getElementById("reset-button");
-            if (remainingClicks < maxClicks) {
-                resetButton.style.display = "block";
-            } else {
-                resetButton.style.display = "block";
-            }
-        }
             
      
    
