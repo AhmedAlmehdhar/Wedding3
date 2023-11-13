@@ -175,99 +175,17 @@
 ;
 
 
-  var numbersOnly = ''
- function retrieveLastNode() {
-  
-  // Get a reference to the data in the database
-  const dataRef = ref(database);
-
-  // Create a query to retrieve the last child node
-  const query1 = query(ref(database, 'clicks'), limitToLast(1));
-
-  // Retrieve the data from the database
-  get(query1)
-  .then((snapshot) => {
-    if (snapshot.exists()) {
-      const lastNode = snapshot.val();
-      const numbersOnly = JSON.stringify(lastNode).replace(/[^\d]/g, '');
-      // Get the canvas element
-    var canvas = document.getElementById("canvas");
-    var context = canvas.getContext("2d");
-
-    // Set the circle properties
-    var centerX = canvas.width / 2;
-    var centerY = canvas.height / 2;
-    var radius = 80;
-    
-    // Set the number properties
-    var number =numbersOnly;
-    var fontSize = 50;
-    var fontFace = "Arial";
-    var fontColor = "white";
-
-    // Draw the circle
-    context.beginPath();
-    context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-    context.fillStyle = "blue";
-    context.fill();
-
-    // Draw the number
-    context.font = fontSize + "px " + fontFace;
-    context.fillStyle = fontColor;
-    context.textAlign = "center";
-    context.textBaseline = "middle";
-    context.fillText(number, centerX, centerY);;
-    } else {
-      alert("No data found");
-    }
-  });
-}      
-    
-
-function MaxMcounter (){
-  
-  
-    var canvas = document.getElementById("canvas3");
-    var context = canvas.getContext("2d");
-
-    // Set the circle properties
-    var centerX = canvas.width / 2;
-    var centerY = canvas.height / 2;
-    var radius = 80;
-    
-    // Set the number properties
-    
-    var number= 3-(idd+1);
-  
-    var fontSize = 50;
-    var fontFace = "Arial";
-    var fontColor = "white";
-
-    // Draw the circle
-    context.beginPath();
-    context.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-    context.fillStyle = "blue";
-    context.fill();
-
-    // Draw the number
-    context.font = fontSize + "px " + fontFace;
-    context.fillStyle = fontColor;
-    context.textAlign = "center";
-    context.textBaseline = "middle";
-    context.fillText(number, centerX, centerY);
-    
-    ;
-    
-
-}       
  
+    
+
+
  
 document.getElementById("myButton").addEventListener("click", insertData);    
      
        
-   document.getElementById("myButton").addEventListener("click", retrieveLastNode); 
+    
    
-window.addEventListener("load", retrieveLastNode); 
+
 
 function overlayText() {
             
