@@ -150,6 +150,11 @@
                // Function to insert data into Firebase
         function insertData() {
             // Get the ID value from the input field
+           if (nodeCount > 10) {
+        alert("You have reached the maximum number of cards.");
+        return;
+           }
+            
             const id = guestName.value;
          
 
