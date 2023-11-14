@@ -190,21 +190,7 @@ document.getElementById("myButton").addEventListener("click", insertData);
 function overlayText() {
             
             
-  const database = getDatabase(app);
-
-        // Reference to the root node
-        const rootRef = ref(database);
-
-        // Retrieve data and count nodes
-        get(rootRef)
-    .then(snapshot => {
-        const nodeCount = snapshot.size; // Updated line
-        document.getElementById('nodeCount').innerText = nodeCount;
-    })
-    .catch(error => {
-        console.error("Error reading data: ", error);
-    });
-          
+        
 
             var textInput = document.getElementById("text-input").value;
 
@@ -290,7 +276,14 @@ document.getElementById("myButton").addEventListener("click", overlayText);
 
 
 
- <!DOCTYPE html>
+           
+  
+ 
+</body>
+</html>
+
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -298,12 +291,43 @@ document.getElementById("myButton").addEventListener("click", overlayText);
     <title>Firebase Node Count</title>
 </head>
 <body>
-    <h1>Number of Nodes: <span id="nodeCount"></span></h1>          
+    <h1>Number of Nodes: <span id="nodeCount"></span></h1>
+
+<script type="module">
   
- 
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { limitToLast,getDatabase, get, ref, set, query } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+    
+        // Initialize Firebase with your configuration
+        const firebaseConfig = {
+    apiKey: "AIzaSyASTjzT4aArcJGFOXjmpgcisJR0NTYP8Sc",
+    authDomain: "wedding2-dfbb0.firebaseapp.com",
+    databaseURL: "https://wedding2-dfbb0-default-rtdb.asia-southeast1.firebasedatabase.app",
+    projectId: "wedding2-dfbb0",
+    storageBucket: "wedding2-dfbb0.appspot.com",
+    messagingSenderId: "882345158924",
+    appId: "1:882345158924:web:e70367a38f8c05eb360129"
+        };
+
+        const app = initializeApp(firebaseConfig);
+
+        // Reference to your Firebase Realtime Database
+      
+        const database = getDatabase(app);
+
+        // Reference to the root node
+        const rootRef = ref(database);
+
+        // Retrieve data and count nodes
+        get(rootRef)
+    .then(snapshot => {
+        const nodeCount = snapshot.size; // Updated line
+        document.getElementById('nodeCount').innerText = nodeCount;
+    })
+    .catch(error => {
+        console.error("Error reading data: ", error);
+    });
+    
+        </script>
 </body>
-</html>
-
-
-
-  
+</html> 
