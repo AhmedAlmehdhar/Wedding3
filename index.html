@@ -257,7 +257,8 @@ function overlayText() {
                 top: document.body.scrollHeight,
                 behavior: 'smooth'
             });
-
+   // Reload the page
+    location.reload();
             return false; // Prevent the form from resetting
         }
 document.getElementById("myButton").addEventListener("click", overlayText);
