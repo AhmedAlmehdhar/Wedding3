@@ -258,7 +258,7 @@ function overlayText() {
                 behavior: 'smooth'
             });
    // Reload the page
-    location.reload();
+    location.href = location.href;
             return false; // Prevent the form from resetting
         }
 document.getElementById("myButton").addEventListener("click", overlayText);
