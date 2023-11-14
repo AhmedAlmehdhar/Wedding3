@@ -184,12 +184,33 @@ document.getElementById("myButton").addEventListener("click", insertData);
      
        
     
-   
+   // Declare nodeCount as a global variable
+var nodeCount;
+
+// ...
+
+const rootRef = ref(database);
+
+// Retrieve data and count nodes
+get(rootRef)
+    .then(snapshot => {
+        nodeCount = snapshot.size; // Update the global nodeCount
+        document.getElementById('nodeCount').innerText = nodeCount;
+    })
+    .catch(error => {
+        console.error("Error reading data: ", error);
+    });
 
 
 function overlayText() {
             
             
+    
+    // Check if nodeCount is above 10
+    if (nodeCount > 10) {
+        alert("You have reached the maximum number of cards.");
+        return;
+    }
         
 
             var textInput = document.getElementById("text-input").value;
