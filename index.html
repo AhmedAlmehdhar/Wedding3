@@ -514,14 +514,15 @@ document.getElementById("myButton").addEventListener("click", overlayText);
 
         // Function to delete data from the database
         function deleteData(parentNode) {
-            const dataRef = ref(database, parentNode);
-            remove(dataRef)
-                .then(() => {
-                    console.log('Data deleted successfully.');
-                })
-                .catch(error => {
-                    console.error('Error deleting data:', error);
-                });
+    const dataRef = ref(database, parentNode);
+    remove(dataRef)
+        .then(() => {
+            console.log('Data deleted successfully.');
+            location.reload(); // Refresh the page
+        })
+        .catch(error => {
+            console.error('Error deleting data:', error);
+        });
         }
     </script>
 </head>
