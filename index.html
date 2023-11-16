@@ -358,17 +358,55 @@ document.getElementById("myButton").addEventListener("click", overlayText);
 </html> 
 
 
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase Realtime Database Example</title>
+    
+    <style>
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .delete-button {
+        background-color: #dc3545;
+        color: #fff;
+        border: none;
+        padding: 6px 10px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .delete-button:hover {
+        background-color: #c82333;
+    }
+</style>
     <!-- Add Firebase SDK -->
     <script type="module">
         // Import the functions you need from the SDKs
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+        import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -389,6 +427,7 @@ document.getElementById("myButton").addEventListener("click", overlayText);
 
         // Function to read data from the database and populate the table
         window.readData = function () {
+        
             // Reference to the root of your data
             const dataRef = ref(database);
 
@@ -426,6 +465,11 @@ document.getElementById("myButton").addEventListener("click", overlayText);
                         headerRow.appendChild(th);
                     });
 
+                    // Add an extra th for the delete button
+                    const deleteTh = document.createElement('th');
+                    deleteTh.textContent = 'Delete';
+                    headerRow.appendChild(deleteTh);
+
                     thead.appendChild(headerRow);
                     table.appendChild(thead);
 
@@ -443,6 +487,17 @@ document.getElementById("myButton").addEventListener("click", overlayText);
                             row.appendChild(td);
                         });
 
+                        // Add delete button
+                        const deleteButton = document.createElement('button');
+                        deleteButton.textContent = 'Delete';
+                        deleteButton.onclick = function () {
+                            deleteData(parentNode);
+                        };
+
+                        const tdDelete = document.createElement('td');
+                        tdDelete.appendChild(deleteButton);
+                        row.appendChild(tdDelete);
+
                         tbody.appendChild(row);
                     });
 
@@ -456,6 +511,18 @@ document.getElementById("myButton").addEventListener("click", overlayText);
                 }
             });
         }
+
+        // Function to delete data from the database
+        function deleteData(parentNode) {
+            const dataRef = ref(database, parentNode);
+            remove(dataRef)
+                .then(() => {
+                    console.log('Data deleted successfully.');
+                })
+                .catch(error => {
+                    console.error('Error deleting data:', error);
+                });
+        }
     </script>
 </head>
 <body>
@@ -467,4 +534,3 @@ document.getElementById("myButton").addEventListener("click", overlayText);
     <button onclick="readData()">Read Data</button>
 </body>
 </html>
-
