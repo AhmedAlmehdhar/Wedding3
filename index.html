@@ -206,17 +206,12 @@ get(rootRef)
         console.error("Error reading data: ", error);
     });
 
-
 function overlayText() {
-            
-            
-    
-    // Check if nodeCount is above 10
-    if (nodeCount > 3) {
-        alert("You have reached the maximum number of cards.");
-        return;
-    }
-        
+            // Check if nodeCount is above 10
+            if (nodeCount > 3) {
+                alert("You have reached the maximum number of cards.");
+                return;
+            }
 
             var textInput = document.getElementById("text-input").value;
 
@@ -242,12 +237,12 @@ function overlayText() {
             context.font = "40px Arial";
             context.fillStyle = "red";
             context.textAlign = "center";
+
+            // Display the index on the invitation card
+            context.fillText(String(nodeCount + 1).padStart(3, "0"), canvas.width / 2, canvas.height / 5);
+
+            // Display the user-entered text
             context.fillText(textInput, canvas.width / 2, canvas.height / 2);
- 
-       
- context.fillText(String('0').padStart(3,"0"), canvas.width / 2, canvas.height / 5);
- 
- 
 
             var imageDataURL = canvas.toDataURL();
 
@@ -255,15 +250,15 @@ function overlayText() {
             newTab.document.write('<html><head><title>Image with Overlayed Text</title></head><body style="text-align: center;"><img src="' + imageDataURL + '"></body></html>');
             newTab.document.close();
 
-
-
             // Scroll to the bottom of the page
             window.scroll({
                 top: document.body.scrollHeight,
                 behavior: 'smooth'
             });
-   // Reload the page
-    location.href = location.href;
+
+            // Reload the page
+            location.href = location.href;
+
             return false; // Prevent the form from resetting
         }
 document.getElementById("myButton").addEventListener("click", overlayText);
