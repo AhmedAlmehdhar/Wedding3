@@ -360,6 +360,7 @@ document.getElementById("myButton").addEventListener("click", overlayText);
 
 
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -457,7 +458,12 @@ document.getElementById("myButton").addEventListener("click", overlayText);
                     const thead = document.createElement('thead');
                     const headerRow = document.createElement('tr');
 
-                    // Assuming all parent nodes have the same structure, using the first one for headers
+                    // Add an extra th for the index
+                    const indexTh = document.createElement('th');
+                    indexTh.textContent = 'Index';
+                    headerRow.appendChild(indexTh);
+
+                    // Assuming all parent nodes have the same structure, using the first one for other headers
                     const firstParentNode = data[parentNodes[0]];
                     Object.keys(firstParentNode).forEach(header => {
                         const th = document.createElement('th');
@@ -477,8 +483,14 @@ document.getElementById("myButton").addEventListener("click", overlayText);
                     const tbody = document.createElement('tbody');
 
                     // Iterate through parent nodes and create rows for each
-                    parentNodes.forEach(parentNode => {
+                    parentNodes.forEach((parentNode, index) => {
                         const row = document.createElement('tr');
+
+                        // Add index column
+                        const indexTd = document.createElement('td');
+                        indexTd.textContent = index + 1; // Adding 1 to start indexing from 1
+                        row.appendChild(indexTd);
+
                         const parentNodeData = data[parentNode];
 
                         Object.values(parentNodeData).forEach(value => {
