@@ -98,6 +98,49 @@
             cursor: pointer;
             font-weight: bold;
         }
+        
+        
+        #loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .lds-ring {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid #3498db;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #3498db transparent transparent transparent;
+        }
+
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
     </style> 
 </head>
 <body>
@@ -122,6 +165,15 @@
    
 
     <button id="share-button" style="display: none;" onclick="openImageInNewTab()">Share via WhatsApp</button>
+    
+    <div id="loading-overlay">
+    <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+</div>
 
     <script type="module">
         
@@ -257,7 +309,23 @@ function overlayText() {
             return false; // Prevent the form from resetting
         }
 document.getElementById("myButton").addEventListener("click", overlayText);
-     
+     window.onload = function () {
+            // Function to show the loading overlay
+            function showLoadingOverlay() {
+                document.getElementById('loading-overlay').style.display = 'flex';
+            }
+
+            // Function to hide the loading overlay
+            function hideLoadingOverlay() {
+                document.getElementById('loading-overlay').style.display = 'none';
+            }
+
+            // Call showLoadingOverlay when the page starts loading
+            showLoadingOverlay();
+
+            // Call hideLoadingOverlay when the page has finished loading
+            window.addEventListener('load', hideLoadingOverlay);
+        };
         </script>
         <script>
             
@@ -537,4 +605,3 @@ document.getElementById("myButton").addEventListener("click", overlayText);
     <button onclick="readData()">Read Data</button>
 </body>
 </html>
-
