@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -125,7 +127,7 @@
         
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { limitToLast,getDatabase, get, ref, set, query } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+        import { limitToLast,getDatabase, get, ref, set, query, push } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
           // Your web app's Firebase configuration
   const firebaseConfig = {
@@ -149,40 +151,33 @@
         
                // Function to insert data into Firebase
         function insertData() {
-            // Get the ID value from the input field
-           if (nodeCount > 3) {
-        ;
+    // Get the ID value from the input field
+    const id = guestName.value.trim();
+
+    // Input validation
+    if (!id) {
+        alert("Please enter a valid guest name");
         return;
-           }
-            
-            const id = guestName.value;
-         
+    }
 
-            // Create the data object with the ID
-            const data = {
-                GuestName: id
-               
-            };
+    // Get the reference to the database
+    const databaseRef = ref(database);
 
+    // Push the data directly
+    const newKey = push(databaseRef, { GuestName: id }).key;
 
-            // Set the data in the Firebase Realtime Database
-            
-            
-            set(ref(database, id), data)
-                .then(() => {
-                    alert("Data added successfully");
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
-        }
-        
-;
-
+    // Set the data in the Firebase Realtime Database using the new key
+    set(ref(database, newKey), { GuestName: id })
+        .then(() => {
+            alert("Data added successfully");
+        })
+        .catch((error) => {
+            alert(error.message);
+        });
+}
 
  
-    
-
+  
 
  
 document.getElementById("myButton").addEventListener("click", insertData);    
@@ -542,3 +537,4 @@ document.getElementById("myButton").addEventListener("click", overlayText);
     <button onclick="readData()">Read Data</button>
 </body>
 </html>
+
