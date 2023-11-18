@@ -152,11 +152,11 @@
         <label for="text-input">Enter text:</label>
         <input type="text" id="text-input"><br><br>
         
- <button type="button" id="myButton">Overlay Text</button>
+ <button type="button" id="myButton">إطبع الكرت</button>
         
     </form>
  <div id="click-count-bxox"></div>
-    <h2>Preview:</h2>
+    
     <div>
         <img id="image-preview" src="11.jpg" alt="Image Preview" onload="setImageDimensions()">
     </div>
@@ -215,10 +215,10 @@
     const databaseRef = ref(database);
 
     // Push the data directly
-    const newKey = push(databaseRef, { GuestName: id }).key;
+    const newKey = push(databaseRef, { الإسم: id }).key;
 
     // Set the data in the Firebase Realtime Database using the new key
-    set(ref(database, newKey), { GuestName: id })
+    set(ref(database, newKey), { الإسم : id })
         .then(() => {
             alert("Data added successfully");
         })
@@ -324,7 +324,7 @@ document.getElementById("myButton").addEventListener("click", overlayText);
 
             // Call hideLoadingOverlay when the page has finished loading
             document.getElementById('image-preview').addEventListener('load', hideLoadingOverlay);
-            setTimeout(hideLoadingOverlay, 3000); // Adjust the timeout value as needed (in milliseconds)
+            setTimeout(hideLoadingOverlay, 600); // Adjust the timeout value as needed (in milliseconds)
         };
         </script>
         <script>
@@ -374,7 +374,7 @@ document.getElementById("myButton").addEventListener("click", overlayText);
     <title>Firebase Node Count</title>
 </head>
 <body>
-    <h1>Number of Nodes: <span id="nodeCount"></span></h1>
+    <h1>عدد المعازيم الحالي : <span id="nodeCount"></span></h1>
 
 <script type="module">
   
@@ -425,18 +425,20 @@ document.getElementById("myButton").addEventListener("click", overlayText);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase Realtime Database Example</title>
-    
     <style>
     table {
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        font-family: Arial, sans-serif;
     }
 
     th, td {
         border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
+        padding: 12px;
+        text-align: center;
     }
 
     th {
@@ -461,6 +463,7 @@ document.getElementById("myButton").addEventListener("click", overlayText);
         background-color: #c82333;
     }
 </style>
+ 
     <!-- Add Firebase SDK -->
     <script type="module">
         // Import the functions you need from the SDKs
@@ -518,7 +521,7 @@ document.getElementById("myButton").addEventListener("click", overlayText);
 
                     // Add an extra th for the index
                     const indexTh = document.createElement('th');
-                    indexTh.textContent = 'Index';
+                    indexTh.textContent = 'رقم الكرت';
                     headerRow.appendChild(indexTh);
 
                     // Assuming all parent nodes have the same structure, using the first one for other headers
@@ -531,7 +534,7 @@ document.getElementById("myButton").addEventListener("click", overlayText);
 
                     // Add an extra th for the delete button
                     const deleteTh = document.createElement('th');
-                    deleteTh.textContent = 'Delete';
+                    deleteTh.textContent = 'حذف';
                     headerRow.appendChild(deleteTh);
 
                     thead.appendChild(headerRow);
@@ -559,7 +562,7 @@ document.getElementById("myButton").addEventListener("click", overlayText);
 
                         // Add delete button
                         const deleteButton = document.createElement('button');
-                        deleteButton.textContent = 'Delete';
+                        deleteButton.textContent = 'حذف';
                         deleteButton.onclick = function () {
                             deleteData(parentNode);
                         };
@@ -602,6 +605,6 @@ document.getElementById("myButton").addEventListener("click", overlayText);
     <div id="output"></div>
 
     <!-- Button to trigger the readData function -->
-    <button onclick="readData()">Read Data</button>
+    <button onclick="readData()">قائمة المعازيم</button>
 </body>
 </html>
