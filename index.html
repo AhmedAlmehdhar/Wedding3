@@ -202,7 +202,13 @@
         
                // Function to insert data into Firebase
         function insertData() {
+        
     // Get the guest name value from the input field
+    if (nodeCount > 3) {
+        ;
+        return;
+    }
+
     const guestNameValue = guestName.value.trim();
 
     // Input validation
