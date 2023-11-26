@@ -202,23 +202,32 @@
         
                // Function to insert data into Firebase
         function insertData() {
-    // Get the ID value from the input field
-    const id = guestName.value.trim();
+    // Get the guest name value from the input field
+    const guestNameValue = guestName.value.trim();
 
     // Input validation
-    if (!id) {
+    if (!guestNameValue) {
         alert("Please enter a valid guest name");
         return;
     }
 
+    // Generate a random 4-digit number
+    const randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000);
+
+    // Combine the guest name and the random number
+    const dataToInsert = {
+        الإسم: guestNameValue,
+        رقم_عشوائي: randomFourDigitNumber
+    };
+
     // Get the reference to the database
     const databaseRef = ref(database);
 
-    // Push the data directly
-    const newKey = push(databaseRef, { الإسم: id }).key;
+    // Push the combined data directly
+    const newKey = push(databaseRef, dataToInsert).key;
 
-    // Set the data in the Firebase Realtime Database using the new key
-    set(ref(database, newKey), { الإسم : id })
+    // Alert success or error
+    set(ref(database, newKey), dataToInsert)
         .then(() => {
             alert("Data added successfully");
         })
