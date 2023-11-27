@@ -142,7 +142,7 @@
             }
         }
     </style> 
-    <script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/neocotic/qrious/dist/qrious.min.js"></script>
 </head>
 <body>
     <h1>موقع كروت الافراح</h1>
@@ -306,13 +306,14 @@ function overlayText() {
 
     
 
+    
     context.fillText(randomFourDigitNumber, canvas.width / 2, canvas.height / 2 - 40);
 
     // Generate QR code
-    const qrCode = new QRCode(document.getElementById("image-preview"), {
-        text: randomFourDigitNumber.toString(),
-        width: 128,
-        height: 128,
+    const qrCode = new QRious({
+        element: document.getElementById("image-preview"),
+        value: randomFourDigitNumber.toString(),
+        size: 128,
     });
 
     // Display the user-entered text
