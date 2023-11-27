@@ -310,12 +310,13 @@ function overlayText() {
     context.fillText(randomFourDigitNumber, canvas.width / 2, canvas.height / 2 - 40);
 
     // Generate QR code
-    const qrCode = new QRious({
-        element: document.getElementById("image-preview"),
-        value: randomFourDigitNumber.toString(),
-        size: 128,
-        
-    });
+    // Generate QR code with transparent background
+const qrCode = new QRious({
+    element: document.getElementById("image-preview"),
+    value: randomFourDigitNumber.toString(),
+    size: 128,
+    background: 'transparent',
+});
     
     // Draw QR code onto the canvas
     context.drawImage(qrCode.canvas, canvas.width / 2 - 64, canvas.height - 128);
