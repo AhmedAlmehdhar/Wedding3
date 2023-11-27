@@ -173,6 +173,7 @@
         <div></div>
     </div>
 </div>
+<script src="https://cdn.rawgit.com/davidshimjs/qrcodejs/gh-pages/qrcode.min.js"></script>
 
     <script type="module">
         
@@ -302,11 +303,16 @@ function overlayText() {
     context.fillStyle = "red";
     context.textAlign = "center";
 
-    // Display the index on the invitation card
-    context.fillText(String(nodeCount + 1).padStart(3, "0"), canvas.width / 2, canvas.height / 5);
+    
 
-    // Display the generated random number
     context.fillText(randomFourDigitNumber, canvas.width / 2, canvas.height / 2 - 40);
+
+    // Generate QR code
+    const qrCode = new QRCode(document.getElementById("image-preview"), {
+        text: randomFourDigitNumber.toString(),
+        width: 128,
+        height: 128,
+    });
 
     // Display the user-entered text
     context.fillText(textInput, canvas.width / 2, canvas.height / 2 + 40);
