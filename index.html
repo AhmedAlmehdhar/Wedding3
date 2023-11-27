@@ -318,7 +318,7 @@ function overlayText() {
     });
     
     // Draw QR code onto the canvas
-    context.drawImage(qrCode.canvas, canvas.width , canvas.height );
+    context.drawImage(qrCode.canvas, canvas.width / 2 - 64, canvas.height - 128);
     
 
     // Display the user-entered text
