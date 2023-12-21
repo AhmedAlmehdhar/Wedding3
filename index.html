@@ -558,6 +558,17 @@ document.getElementById("myButton").addEventListener("click", overlayText);
                     // Add an extra th for the index
                     const indexTh = document.createElement('th');
                     indexTh.textContent = 'رقم الكرت';
+   const parentNodeData = data[parentNode];
+
+// Assuming رقم_عشوائي is the key for the random number in your Firebase data
+const randomFourDigitNumberFirebase = parentNodeData["رقم_عشوائي"];
+
+// ... (Other table cell creation)
+
+// Display the random number in the table
+const randomTd = document.createElement('td');
+randomTd.textContent = randomFourDigitNumberFirebase;
+row.appendChild(randomTd);                 
                     headerRow.appendChild(indexTh);
 
                     // Assuming all parent nodes have the same structure, using the first one for other headers
