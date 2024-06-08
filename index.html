@@ -1,460 +1,3 @@
-
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>كروت حفل زفاف </title>
-    <style>
-  
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f7f7f7;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        form {
-            max-width: 400px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-
-        button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #image-preview {
-            max-width: 100%;
-            height: auto;
-            margin-top: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        #click-count-box {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f2f2f2;
-            text-align: center;
-        }
-
-        #share-button {
-            display: none;
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        #reset-button {
-            display: none;
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #dc3545;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        
-        #loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .lds-ring {
-            display: inline-block;
-            position: relative;
-            width: 80px;
-            height: 80px;
-        }
-
-        .lds-ring div {
-            box-sizing: border-box;
-            display: block;
-            position: absolute;
-            width: 64px;
-            height: 64px;
-            margin: 8px;
-            border: 8px solid #3498db;
-            border-radius: 50%;
-            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-            border-color: #3498db transparent transparent transparent;
-        }
-
-        @keyframes lds-ring {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style> 
-    <script src="https://cdn.jsdelivr.net/gh/neocotic/qrious/dist/qrious.min.js"></script>
-</head>
-<body>
-    <h1>موقع كروت الافراح</h1>
-    
-
-
-    <form id="my-form">
-        <label for="text-input">Enter text:</label>
-        <input type="text" id="text-input"><br><br>
-        
- <button type="button" id="myButton">إطبع الكرت</button>
-        
-    </form>
- <div id="click-count-bxox"></div>
-    
-    <div>
-        <img id="image-preview" src="11.jpg" alt="Image Preview" onload="setImageDimensions()">
-    </div>
-
-   
-
-    <button id="share-button" style="display: none;" onclick="openImageInNewTab()">Share via WhatsApp</button>
-    
-    <div id="loading-overlay">
-    <div class="lds-ring">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-</div>
-
-
-    <script type="module">
-        
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { limitToLast,getDatabase, get, ref, set, query, push } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-
-          // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyASTjzT4aArcJGFOXjmpgcisJR0NTYP8Sc",
-    authDomain: "wedding2-dfbb0.firebaseapp.com",
-    databaseURL: "https://wedding2-dfbb0-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "wedding2-dfbb0",
-    storageBucket: "wedding2-dfbb0.appspot.com",
-    messagingSenderId: "882345158924",
-    appId: "1:882345158924:web:e70367a38f8c05eb360129"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase();
-
-        // Get references to the HTML elements
-       
-        const guestName = document.getElementById("text-input");
-        const insertBtn = document.getElementById("myButton");
-        
-               // Function to insert data into Firebase
-        function insertData() {
-        
-    // Get the guest name value from the input field
-    if (nodeCount > 3) {
-        ;
-        return;
-    }
-
-    const guestNameValue = guestName.value.trim();
-
-    // Input validation
-    if (!guestNameValue) {
-        alert("Please enter a valid guest name");
-        return;
-    }
-
-    // Generate a random 4-digit number
-    const randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000);
-
-    // Combine the guest name and the random number
-    const dataToInsert = {
-    الإسم: guestNameValue,
-    رقم_عشوائي: randomFourDigitNumber.toString() // Use the string representation
-};
-
-    // Get the reference to the database
-    const databaseRef = ref(database);
-
-    // Push the combined data directly
-    const newKey = push(databaseRef, dataToInsert).key;
-
-    // Alert success or error
-    set(ref(database, newKey), dataToInsert)
-        .then(() => {
-            alert("Data added successfully");
-        })
-        .catch((error) => {
-            alert(error.message);
-        });
-}
-
- 
-  
-
- 
-document.getElementById("myButton").addEventListener("click", insertData);    
-     
-       
-    
-   // Declare nodeCount as a global variable
-var nodeCount;
-
-// ...
-
-const rootRef = ref(database);
-
-// Retrieve data and count nodes
-get(rootRef)
-    .then(snapshot => {
-        nodeCount = snapshot.size; // Update the global nodeCount
-        
-    })
-    .catch(error => {
-        console.error("Error reading data: ", error);
-    });
-
-function overlayText() {
-    // Check if nodeCount is above a certain threshold (you can adjust this threshold as needed)
-    if (nodeCount > 3) {
-        alert("You have reached the maximum number of cards.");
-        return;
-    }
-
-    var textInput = document.getElementById("text-input").value;
-
-    if (textInput.trim() === "") {
-        alert("Please enter the text before overlaying.");
-        return;
-    }
-
-    // Generate a random 4-digit number
-    const randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000);
-
-    var image = document.getElementById("image-preview");
-
-    // Remove previously generated image
-    var prevOutput = document.getElementById("output-image");
-    if (prevOutput) {
-        prevOutput.remove();
-    }
-
-    var canvas = document.createElement("canvas");
-    canvas.width = imageWidth;
-    canvas.height = imageHeight;
-
-    var context = canvas.getContext("2d");
-    context.drawImage(image, 0, 0);
-    context.font = "40px Arial";
-    context.fillStyle = "red";
-    context.textAlign = "center";
-
-    
-
-    
-    context.fillText(randomFourDigitNumber, canvas.width / 2, canvas.height / 2 - 40);
-
-    // Generate QR code
-    // Generate QR code with transparent background
-const qrCode = new QRious({
-    element: document.getElementById("image-preview"),
-    value: randomFourDigitNumber.toString(), // Use the string representation
-    size: 126,
-    background: 'transparent',
-});
-    
-    
-    // Draw QR code onto the canvas
-    context.drawImage(qrCode.canvas, canvas.width / 2 - 64, canvas.height - 128);
-    
-
-    // Display the user-entered text
-    context.fillText(textInput, canvas.width / 2, canvas.height / 2 + 40);
-
-    var imageDataURL = canvas.toDataURL();
-
-    var newTab = window.open();
-    newTab.document.write('<html><head><title>Image with Overlayed Text</title></head><body style="text-align: center;"><img src="' + imageDataURL + '"></body></html>');
-    newTab.document.close();
-
-    // Scroll to the bottom of the page
-    window.scroll({
-        top: document.body.scrollHeight,
-        behavior: 'smooth'
-    });
-
-    // Reload the page
-    location.href = location.href;
-
-    return false; // Prevent the form from resetting
-}
-document.getElementById("myButton").addEventListener("click", overlayText);
-     window.onload = function () {
-            // Function to show the loading overlay
-            function showLoadingOverlay() {
-                document.getElementById('loading-overlay').style.display = 'flex';
-            }
-
-            // Function to hide the loading overlay
-            function hideLoadingOverlay() {
-                document.getElementById('loading-overlay').style.display = 'none';
-            }
-
-            // Call showLoadingOverlay when the page starts loading
-            showLoadingOverlay();
-
-            // Call hideLoadingOverlay when the page has finished loading
-            document.getElementById('image-preview').addEventListener('load', hideLoadingOverlay);
-            setTimeout(hideLoadingOverlay, 600); // Adjust the timeout value as needed (in milliseconds)
-        };
-        </script>
-        <script>
-            
-   
-       
-   
-           
-       
-     
-        var imageWidth;
-        var imageHeight;
-
-        function setImageDimensions() {
-            var image = document.getElementById("image-preview");
-            imageWidth = image.naturalWidth;
-            imageHeight = image.naturalHeight;
-        }
-
-        window.onload = function() {
-            ;
-        };
-            
-     
-   
-    
-    </script>
-
-    <button id="reset-button" onclick="resetClicks()">Reset Clicks</button>
-
-
-  
-</html>
-
-
-
-           
-  
- 
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-   
-    <title>Firebase Node Count</title>
-</head>
-<body>
-    <h1>عدد الضيوف الحالي : <span id="nodeCount"></span></h1>
-
-<script type="module">
-  
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { limitToLast,getDatabase, get, ref, set, query } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-    
-        // Initialize Firebase with your configuration
-        const firebaseConfig = {
-    apiKey: "AIzaSyASTjzT4aArcJGFOXjmpgcisJR0NTYP8Sc",
-    authDomain: "wedding2-dfbb0.firebaseapp.com",
-    databaseURL: "https://wedding2-dfbb0-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "wedding2-dfbb0",
-    storageBucket: "wedding2-dfbb0.appspot.com",
-    messagingSenderId: "882345158924",
-    appId: "1:882345158924:web:e70367a38f8c05eb360129"
-        };
-
-        const app = initializeApp(firebaseConfig);
-
-        // Reference to your Firebase Realtime Database
-      
-        const database = getDatabase(app);
-
-        // Reference to the root node
-        const rootRef = ref(database);
-
-        // Retrieve data and count nodes
-        get(rootRef)
-    .then(snapshot => {
-        const nodeCount = snapshot.size; // Updated line
-        document.getElementById('nodeCount').innerText = nodeCount;
-    })
-    .catch(error => {
-        console.error("Error reading data: ", error);
-    });
-    
-        </script>
-</body>
-</html> 
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -462,44 +5,43 @@ document.getElementById("myButton").addEventListener("click", overlayText);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase Realtime Database Example</title>
     <style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        overflow: hidden;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        font-family: Arial, sans-serif;
-    }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+        }
 
-    th, td {
-        border: 1px solid #ddd;
-        padding: 12px;
-        text-align: center;
-    }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
 
-    th {
-        background-color: #4CAF50;
-        color: white;
-    }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
 
-    tbody tr:hover {
-        background-color: #f5f5f5;
-    }
+        tbody tr:hover {
+            background-color: #f5f5f5;
+        }
 
-    .delete-button {
-        background-color: #dc3545;
-        color: #fff;
-        border: none;
-        padding: 6px 10px;
-        cursor: pointer;
-        border-radius: 4px;
-    }
+        .delete-button {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
 
-    .delete-button:hover {
-        background-color: #c82333;
-    }
-</style>
- 
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+    </style>
     <!-- Add Firebase SDK -->
     <script type="module">
         // Import the functions you need from the SDKs
@@ -521,11 +63,10 @@ document.getElementById("myButton").addEventListener("click", overlayText);
         const app = initializeApp(firebaseConfig);
 
         // Reference to the root of your database
-        const database = getDatabase();
+        const database = getDatabase(app);
 
         // Function to read data from the database and populate the table
-        window.readData = function () {
-        
+        function readData() {
             // Reference to the root of your data
             const dataRef = ref(database);
 
@@ -558,17 +99,6 @@ document.getElementById("myButton").addEventListener("click", overlayText);
                     // Add an extra th for the index
                     const indexTh = document.createElement('th');
                     indexTh.textContent = 'رقم الكرت';
-   const parentNodeData = data[parentNode];
-
-// Assuming رقم_عشوائي is the key for the random number in your Firebase data
-const randomFourDigitNumberFirebase = parentNodeData["رقم_عشوائي"];
-
-// ... (Other table cell creation)
-
-// Display the random number in the table
-const randomTd = document.createElement('td');
-randomTd.textContent = randomFourDigitNumberFirebase;
-row.appendChild(randomTd);                 
                     headerRow.appendChild(indexTh);
 
                     // Assuming all parent nodes have the same structure, using the first one for other headers
@@ -634,15 +164,20 @@ row.appendChild(randomTd);
 
         // Function to delete data from the database
         function deleteData(parentNode) {
-    const dataRef = ref(database, parentNode);
-    remove(dataRef)
-        .then(() => {
-            console.log('Data deleted successfully.');
-            location.reload(); // Refresh the page
-        })
-        .catch(error => {
-            console.error('Error deleting data:', error);
-        });
+            const dataRef = ref(database, parentNode);
+            remove(dataRef)
+                .then(() => {
+                    console.log('Data deleted successfully.');
+                    location.reload(); // Refresh the page
+                })
+                .catch(error => {
+                    console.error('Error deleting data:', error);
+                });
+        }
+
+        // Call readData on page load
+        window.onload = function () {
+            readData();
         }
     </script>
 </head>
@@ -650,7 +185,5 @@ row.appendChild(randomTd);
     <!-- Display the data here -->
     <!-- For example, create a div with id "output" -->
     <div id="output"></div>
-
-    <!-- Button to trigger the readData function -->
-    <button onclick="readData()">قائمة الضيوف</button>
+</body>
 </html>
