@@ -1,64 +1,169 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Realtime Database Example</title>
+    <title>كروت حفل زفاف</title>
     <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        body {
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f7f7f7;
         }
 
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 400px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        button {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #image-preview {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #click-count-box {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f2f2f2;
             text-align: center;
         }
 
-        th {
-            background-color: #4CAF50;
-            color: white;
+        #share-button {
+            display: none;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
         }
 
-        tbody tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        .delete-button {
+        #reset-button {
+            display: none;
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
             background-color: #dc3545;
             color: #fff;
             border: none;
-            padding: 6px 10px;
-            cursor: pointer;
             border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
         }
-
-        .delete-button:hover {
-            background-color: #c82333;
-        }
-
-        .overlay {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: rgba(0, 0, 0, 0.5);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
+        
+        #loading-overlay {
             display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
         }
-    </style>
-    <!-- Add Firebase SDK -->
+
+        .lds-ring {
+            display: inline-block;
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+
+        .lds-ring div {
+            box-sizing: border-box;
+            display: block;
+            position: absolute;
+            width: 64px;
+            height: 64px;
+            margin: 8px;
+            border: 8px solid #3498db;
+            border-radius: 50%;
+            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            border-color: #3498db transparent transparent transparent;
+        }
+
+        @keyframes lds-ring {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style> 
+    <script src="https://cdn.jsdelivr.net/gh/neocotic/qrious/dist/qrious.min.js"></script>
+</head>
+<body>
+    <h1>موقع كروت الافراح</h1>
+    <form id="my-form">
+        <label for="text-input">Enter text:</label>
+        <input type="text" id="text-input"><br><br>
+        <button type="button" id="myButton">إطبع الكرت</button>
+    </form>
+    <div id="click-count-box"></div>
+    <div>
+        <img id="image-preview" src="11.jpg" alt="Image Preview" onload="setImageDimensions()">
+    </div>
+    <button id="share-button" onclick="openImageInNewTab()">Share via WhatsApp</button>
+    <div id="loading-overlay">
+        <div class="lds-ring">
+            <div></div>
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
     <script type="module">
-        // Import the functions you need from the SDKs
+        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+        import { limitToLast, getDatabase, get, ref, set, query, push } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -73,147 +178,113 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
+        const database = getDatabase();
 
-        // Reference to the root of your database
-        const database = getDatabase(app);
+        // Get references to the HTML elements
+        const guestName = document.getElementById("text-input");
+        const insertBtn = document.getElementById("myButton");
 
-        // Function to read data from the database and populate the table
-        function readData() {
-            // Reference to the root of your data
-            const dataRef = ref(database);
+        // Function to insert data into Firebase
+        function insertData() {
+            if (nodeCount > 3) {
+                return;
+            }
 
-            // Read data from the database
-            onValue(dataRef, (snapshot) => {
-                // Get data from the snapshot
-                const data = snapshot.val();
+            const guestNameValue = guestName.value.trim();
 
-                if (!data || typeof data !== 'object') {
-                    console.error('Invalid data format:', data);
-                    return;
-                }
+            // Input validation
+            if (!guestNameValue) {
+                alert("Please enter a valid guest name");
+                return;
+            }
 
-                // Process or display the data as needed
-                const outputDiv = document.getElementById('output');
+            // Generate a random 4-digit number
+            const randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000);
 
-                // Convert object keys to an array
-                const parentNodes = Object.keys(data);
+            // Combine the guest name and the random number
+            const dataToInsert = {
+                الإسم: guestNameValue,
+                رقم_عشوائي: randomFourDigitNumber.toString()
+            };
 
-                // Check if parentNodes is a non-empty array
-                if (parentNodes.length > 0) {
-                    // Create a table only if parentNodes is a non-empty array
-                    const table = document.createElement('table');
-                    table.border = '1';
+            // Get the reference to the database
+            const databaseRef = ref(database);
 
-                    // Create table header
-                    const thead = document.createElement('thead');
-                    const headerRow = document.createElement('tr');
+            // Push the combined data directly
+            const newKey = push(databaseRef, dataToInsert).key;
 
-                    // Add an extra th for the index
-                    const indexTh = document.createElement('th');
-                    indexTh.textContent = 'رقم الكرت';
-                    headerRow.appendChild(indexTh);
-
-                    // Assuming all parent nodes have the same structure, using the first one for other headers
-                    const firstParentNode = data[parentNodes[0]];
-                    Object.keys(firstParentNode).forEach(header => {
-                        const th = document.createElement('th');
-                        th.textContent = header;
-                        headerRow.appendChild(th);
-                    });
-
-                    // Add an extra th for the delete button
-                    const deleteTh = document.createElement('th');
-                    deleteTh.textContent = 'حذف';
-                    headerRow.appendChild(deleteTh);
-
-                    thead.appendChild(headerRow);
-                    table.appendChild(thead);
-
-                    // Create table body
-                    const tbody = document.createElement('tbody');
-
-                    // Iterate through parent nodes and create rows for each
-                    parentNodes.forEach((parentNode, index) => {
-                        const row = document.createElement('tr');
-
-                        // Add index column
-                        const indexTd = document.createElement('td');
-                        indexTd.textContent = index + 1; // Adding 1 to start indexing from 1
-                        row.appendChild(indexTd);
-
-                        const parentNodeData = data[parentNode];
-
-                        Object.values(parentNodeData).forEach(value => {
-                            const td = document.createElement('td');
-                            td.textContent = value;
-                            row.appendChild(td);
-                        });
-
-                        // Add delete button
-                        const deleteButton = document.createElement('button');
-                        deleteButton.textContent = 'حذف';
-                        deleteButton.className = 'delete-button';
-                        deleteButton.onclick = function () {
-                            deleteData(parentNode);
-                        };
-
-                        const tdDelete = document.createElement('td');
-                        tdDelete.appendChild(deleteButton);
-                        row.appendChild(tdDelete);
-
-                        tbody.appendChild(row);
-                    });
-
-                    table.appendChild(tbody);
-
-                    // Clear previous content and append the table
-                    outputDiv.innerHTML = '';
-                    outputDiv.appendChild(table);
-                } else {
-                    console.error('Empty array:', parentNodes);
-                }
-            });
-        }
-
-        // Function to delete data from the database
-        function deleteData(parentNode) {
-            const dataRef = ref(database, parentNode);
-            remove(dataRef)
+            // Alert success or error
+            set(ref(database, newKey), dataToInsert)
                 .then(() => {
-                    console.log('Data deleted successfully.');
-                    location.reload(); // Refresh the page
+                    alert("Data added successfully");
                 })
-                .catch(error => {
-                    console.error('Error deleting data:', error);
+                .catch((error) => {
+                    alert(error.message);
                 });
         }
 
-        // Function to display overlay text
-        function showOverlay(text) {
-            const overlay = document.createElement('div');
-            overlay.className = 'overlay';
-            overlay.textContent = text;
-            document.body.appendChild(overlay);
+        document.getElementById("myButton").addEventListener("click", insertData);
 
-            setTimeout(() => {
-                overlay.style.display = 'block';
-            }, 100); // Delay to allow the element to be fully added to the DOM
+        // Declare nodeCount as a global variable
+        var nodeCount;
 
-            setTimeout(() => {
-                overlay.style.display = 'none';
-                document.body.removeChild(overlay);
-            }, 3000); // Display for 3 seconds
-        }
+        const rootRef = ref(database);
 
-        // Call readData on page load
-        window.onload = function () {
-            readData();
-        }
-    </script>
-</head>
-<body>
-    <!-- Display the data here -->
-    <!-- For example, create a div with id "output" -->
-    <div id="output"></div>
-</body>
-</html>
+        // Retrieve data and count nodes
+        get(rootRef)
+            .then(snapshot => {
+                nodeCount = snapshot.size;
+            })
+            .catch(error => {
+                console.error("Error reading data: ", error);
+            });
+
+        function overlayText() {
+            if (nodeCount > 3) {
+                alert("You have reached the maximum number of cards.");
+                return;
+            }
+
+            var textInput = document.getElementById("text-input").value;
+
+            if (textInput.trim() === "") {
+                alert("Please enter the text before overlaying.");
+                return;
+            }
+
+            const randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000);
+
+            var image = document.getElementById("image-preview");
+
+            var prevOutput = document.getElementById("output-image");
+            if (prevOutput) {
+                prevOutput.remove();
+            }
+
+            var canvas = document.createElement("canvas");
+            canvas.width = imageWidth;
+            canvas.height = imageHeight;
+
+            var context = canvas.getContext("2d");
+            context.drawImage(image, 0, 0);
+            context.font = "40px Arial";
+            context.fillStyle = "red";
+            context.textAlign = "center";
+
+            context.fillText(randomFourDigitNumber, canvas.width / 2, canvas.height / 2 - 40);
+
+            const qrCode = new QRious({
+                element: document.getElementById("image-preview"),
+                value: randomFourDigitNumber.toString(),
+                size: 126,
+                background: 'transparent',
+            });
+
+            context.drawImage(qrCode.canvas, canvas.width / 2 - 64, canvas.height - 128);
+
+            context.fillText(textInput, canvas.width / 2, canvas.height / 2 + 40);
+
+            var imageDataURL = canvas.toDataURL();
+
+            var newTab = window.open();
+            newTab.document.write('<html><head><title>Image with Overlayed Text</title></head
