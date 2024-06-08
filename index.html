@@ -140,6 +140,7 @@
                         // Add delete button
                         const deleteButton = document.createElement('button');
                         deleteButton.textContent = 'حذف';
+                        deleteButton.className = 'delete-button';
                         deleteButton.onclick = function () {
                             deleteData(parentNode);
                         };
