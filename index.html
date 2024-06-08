@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
+    <meta charset="UTF-8">
     <title>كروت حفل زفاف</title>
     <style>
         body {
@@ -95,7 +96,7 @@
             cursor: pointer;
             font-weight: bold;
         }
-        
+
         #loading-overlay {
             display: none;
             position: fixed;
@@ -137,14 +138,14 @@
                 transform: rotate(360deg);
             }
         }
-    </style> 
+    </style>
     <script src="https://cdn.jsdelivr.net/gh/neocotic/qrious/dist/qrious.min.js"></script>
 </head>
 <body>
     <h1>موقع كروت الافراح</h1>
     <form id="my-form">
         <label for="text-input">Enter text:</label>
-        <input type="text" id="text-input"><br><br>
+        <input type="text" id="text-input">
         <button type="button" id="myButton">إطبع الكرت</button>
     </form>
     <div id="click-count-box"></div>
@@ -161,11 +162,10 @@
         </div>
     </div>
     <script type="module">
-        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { limitToLast, getDatabase, get, ref, set, query, push } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+        import { getDatabase, ref, get, push, set } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
-        // Your web app's Firebase configuration
+        / Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyASTjzT4aArcJGFOXjmpgcisJR0NTYP8Sc",
             authDomain: "wedding2-dfbb0.firebaseapp.com",
@@ -176,115 +176,113 @@
             appId: "1:882345158924:web:e70367a38f8c05eb360129"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase();
 
-        // Get references to the HTML elements
-        const guestName = document.getElementById("text-input");
-        const insertBtn = document.getElementById("myButton");
+        let nodeCount = 0;
 
-        // Function to insert data into Firebase
-        function insertData() {
-            if (nodeCount > 3) {
-                return;
-            }
-
-            const guestNameValue = guestName.value.trim();
-
-            // Input validation
-            if (!guestNameValue) {
-                alert("Please enter a valid guest name");
-                return;
-            }
-
-            // Generate a random 4-digit number
-            const randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000);
-
-            // Combine the guest name and the random number
-            const dataToInsert = {
-                الإسم: guestNameValue,
-                رقم_عشوائي: randomFourDigitNumber.toString()
-            };
-
-            // Get the reference to the database
-            const databaseRef = ref(database);
-
-            // Push the combined data directly
-            const newKey = push(databaseRef, dataToInsert).key;
-
-            // Alert success or error
-            set(ref(database, newKey), dataToInsert)
-                .then(() => {
-                    alert("Data added successfully");
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
-        }
+        get(ref(database)).then(snapshot => {
+            nodeCount = snapshot.size;
+        }).catch(error => {
+            console.error("Error reading data: ", error);
+        });
 
         document.getElementById("myButton").addEventListener("click", insertData);
 
-        // Declare nodeCount as a global variable
-        var nodeCount;
-
-        const rootRef = ref(database);
-
-        // Retrieve data and count nodes
-        get(rootRef)
-            .then(snapshot => {
-                nodeCount = snapshot.size;
-            })
-            .catch(error => {
-                console.error("Error reading data: ", error);
-            });
-
-        function overlayText() {
+        function insertData() {
             if (nodeCount > 3) {
                 alert("You have reached the maximum number of cards.");
                 return;
             }
 
-            var textInput = document.getElementById("text-input").value;
-
-            if (textInput.trim() === "") {
-                alert("Please enter the text before overlaying.");
+            const guestName = document.getElementById("text-input").value.trim();
+            if (!guestName) {
+                alert("Please enter a valid guest name");
                 return;
             }
 
-            const randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000);
+            const randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000).toString();
+            const dataToInsert = {
+                الإسم: guestName,
+                رقم_عشوائي: randomFourDigitNumber
+            };
 
-            var image = document.getElementById("image-preview");
+            const newKey = push(ref(database)).key;
 
-            var prevOutput = document.getElementById("output-image");
-            if (prevOutput) {
-                prevOutput.remove();
-            }
+            set(ref(database, newKey), dataToInsert).then(() => {
+                alert("Data added successfully");
+                overlayText(guestName, randomFourDigitNumber);
+            }).catch((error) => {
+                alert(error.message);
+            });
+        }
 
-            var canvas = document.createElement("canvas");
-            canvas.width = imageWidth;
-            canvas.height = imageHeight;
+        function overlayText(textInput, randomFourDigitNumber) {
+            const image = document.getElementById("image-preview");
+            const canvas = document.createElement("canvas");
+            canvas.width = image.naturalWidth;
+            canvas.height = image.naturalHeight;
 
-            var context = canvas.getContext("2d");
+            const context = canvas.getContext("2d");
             context.drawImage(image, 0, 0);
             context.font = "40px Arial";
             context.fillStyle = "red";
             context.textAlign = "center";
-
             context.fillText(randomFourDigitNumber, canvas.width / 2, canvas.height / 2 - 40);
 
             const qrCode = new QRious({
-                element: document.getElementById("image-preview"),
-                value: randomFourDigitNumber.toString(),
+                value: randomFourDigitNumber,
                 size: 126,
-                background: 'transparent',
+                background: 'transparent'
             });
-
             context.drawImage(qrCode.canvas, canvas.width / 2 - 64, canvas.height - 128);
-
             context.fillText(textInput, canvas.width / 2, canvas.height / 2 + 40);
 
-            var imageDataURL = canvas.toDataURL();
+            const imageDataURL = canvas.toDataURL();
+            const newTab = window.open();
+            newTab.document.write('<html><head><title>Image with Overlayed Text</title></head><body style="text-align: center;"><img src="' + imageDataURL + '"></body></html>');
+            newTab.document.close();
 
-            var newTab = window.open();
-            newTab.document.write('<html><head><title>Image with Overlayed Text</title></head
+            window.scroll({
+                top: document.body.scrollHeight,
+                behavior: 'smooth'
+            });
+
+            location.href = location.href;
+        }
+
+        window.onload = function () {
+            function showLoadingOverlay() {
+                document.getElementById('loading-overlay').style.display = 'flex';
+            }
+
+            function hideLoadingOverlay() {
+                document.getElementById('loading-overlay').style.display = 'none';
+            }
+
+            showLoadingOverlay();
+            document.getElementById('image-preview').addEventListener('load', hideLoadingOverlay);
+            setTimeout(hideLoadingOverlay, 600);
+        };
+
+        function setImageDimensions() {
+            const image = document.getElementById("image-preview");
+            imageWidth = image.naturalWidth;
+            imageHeight = image.naturalHeight;
+        }
+    </script>
+    <button id="reset-button" onclick="resetClicks()">Reset Clicks</button>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>Firebase Node Count</title>
+</head>
+<body>
+    <h1>عدد الضيوف الحالي: <span id="nodeCount"></span></h1>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+        import { getDatabase, ref, get
