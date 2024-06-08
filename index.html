@@ -644,6 +644,12 @@ row.appendChild(randomTd);
             console.error('Error deleting data:', error);
         });
         }
+            
+        // Call readData() when the window loads
+        window.onload = function() {
+            readData();
+        };
+    
     </script>
         <script>
         // Call readData() when the window loads
