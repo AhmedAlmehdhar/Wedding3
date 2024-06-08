@@ -451,10 +451,6 @@ document.getElementById("myButton").addEventListener("click", overlayText);
 </body>
 </html> 
 
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -462,44 +458,55 @@ document.getElementById("myButton").addEventListener("click", overlayText);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Firebase Realtime Database Example</title>
     <style>
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-        overflow: hidden;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        font-family: Arial, sans-serif;
-    }
+        /* Your CSS styles here */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+        }
 
-    th, td {
-        border: 1px solid #ddd;
-        padding: 12px;
-        text-align: center;
-    }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
 
-    th {
-        background-color: #4CAF50;
-        color: white;
-    }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
 
-    tbody tr:hover {
-        background-color: #f5f5f5;
-    }
+        tbody tr:hover {
+            background-color: #f5f5f5;
+        }
 
-    .delete-button {
-        background-color: #dc3545;
-        color: #fff;
-        border: none;
-        padding: 6px 10px;
-        cursor: pointer;
-        border-radius: 4px;
-    }
+        .delete-button {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            padding: 6px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
 
-    .delete-button:hover {
-        background-color: #c82333;
-    }
-</style>
- 
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <!-- Display the data here -->
+    <!-- For example, create a div with id "output" -->
+    <div id="output"></div>
+
+    <h1>test</h1>
+
+    <!-- Button to trigger the readData function -->
+    <button onclick="readData()">قائمة الضيوف</button>
+
     <!-- Add Firebase SDK -->
     <script type="module">
         // Import the functions you need from the SDKs
@@ -558,17 +565,6 @@ document.getElementById("myButton").addEventListener("click", overlayText);
                     // Add an extra th for the index
                     const indexTh = document.createElement('th');
                     indexTh.textContent = 'رقم الكرت';
-   const parentNodeData = data[parentNode];
-
-// Assuming رقم_عشوائي is the key for the random number in your Firebase data
-const randomFourDigitNumberFirebase = parentNodeData["رقم_عشوائي"];
-
-// ... (Other table cell creation)
-
-// Display the random number in the table
-const randomTd = document.createElement('td');
-randomTd.textContent = randomFourDigitNumberFirebase;
-row.appendChild(randomTd);                 
                     headerRow.appendChild(indexTh);
 
                     // Assuming all parent nodes have the same structure, using the first one for other headers
@@ -600,7 +596,6 @@ row.appendChild(randomTd);
                         row.appendChild(indexTd);
 
                         const parentNodeData = data[parentNode];
-
                         Object.values(parentNodeData).forEach(value => {
                             const td = document.createElement('td');
                             td.textContent = value;
@@ -634,43 +629,24 @@ row.appendChild(randomTd);
 
         // Function to delete data from the database
         function deleteData(parentNode) {
-    const dataRef = ref(database, parentNode);
-    remove(dataRef)
-        .then(() => {
-            console.log('Data deleted successfully.');
-            location.reload(); // Refresh the page
-        })
-        .catch(error => {
-            console.error('Error deleting data:', error);
-        });
+            const dataRef = ref(database, parentNode);
+            remove(dataRef)
+                .then(() => {
+                    console.log('Data deleted successfully.');
+                    location.reload(); // Refresh the page
+                })
+                .catch(error => {
+                    console.error('Error deleting data:', error);
+                });
         }
             
         // Call readData() when the window loads
         window.onload = function() {
             readData();
         };
-    
     </script>
-        <script>
-        // Call readData() when the window loads
-        window.onload = function() {
-            readData();
-        };
-        </script>
-   <body>
-       
-    
-    <!-- Display the data here -->
-    <!-- For example, create a div with id "output" -->
-    <div id="output"></div>
-
-       <h1>test</h1>
-   </body>
-    <!-- Button to trigger the readData function -->
-    <button onclick="readData()">قائمة الضيوف</button>
-       
-</head>
-
-    
-
+</body>
 </html>
+
+
+
