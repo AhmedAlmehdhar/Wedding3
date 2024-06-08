@@ -307,24 +307,16 @@ function overlayText() {
     
 
     
-    context.fillText(randomFourDigitNumber, canvas.width / 2, canvas.height / 2 - 40);
-
-    // Generate QR code
-    // Generate QR code with transparent background
-const qrCode = new QRious({
-    element: document.getElementById("image-preview"),
-    value: randomFourDigitNumber.toString(), // Use the string representation
-    size: 126,
-    background: 'transparent',
+    
 });
     
     
     // Draw QR code onto the canvas
-    context.drawImage(qrCode.canvas, canvas.width / 2 - 64, canvas.height - 128);
+    
     
 
     // Display the user-entered text
-    context.fillText(textInput, canvas.width / 2, canvas.height / 2 + 40);
+    context.fillText(textInput, canvas.width / 2, canvas.height / 2 + 60);
 
     var imageDataURL = canvas.toDataURL();
 
