@@ -206,7 +206,7 @@
         function insertData() {
         
     // Get the guest name value from the input field
-    if (nodeCount > 3) {
+    if (nodeCount > 120) {
         ;
         return;
     }
@@ -271,7 +271,7 @@ get(rootRef)
 
 function overlayText() {
     // Check if nodeCount is above a certain threshold (you can adjust this threshold as needed)
-    if (nodeCount > 3) {
+    if (nodeCount > 120) {
         alert("You have reached the maximum number of cards.");
         return;
     }
@@ -645,6 +645,12 @@ row.appendChild(randomTd);
         });
         }
     </script>
+        <script>
+        // Call readData() when the window loads
+        window.onload = function() {
+            readData();
+        };
+        </script>
 </head>
 <body>
     <!-- Display the data here -->
@@ -653,4 +659,6 @@ row.appendChild(randomTd);
 
     <!-- Button to trigger the readData function -->
     <button onclick="readData()">قائمة الضيوف</button>
+
+    
 </html>
