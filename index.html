@@ -299,7 +299,7 @@ function overlayText() {
     var context = canvas.getContext("2d");
     context.drawImage(image, 0, 0);
     context.font = "30px Arial";
-    context.fillStyle = "#FF69B4";
+    context.fillStyle = "black";
     context.textAlign = "center";
 
     
@@ -319,7 +319,7 @@ const qrCode = new QRious({
     
 
     // Display the user-entered text
-    context.fillText(textInput, canvas.width / 2, canvas.height/1.01);
+    context.fillText(textInput, canvas.width / 2, canvas.height/1.1);
 
     var imageDataURL = canvas.toDataURL();
 
