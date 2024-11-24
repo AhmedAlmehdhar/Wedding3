@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>كروت حفل زفاف </title>
     <style>
         body {
@@ -95,7 +97,7 @@
             cursor: pointer;
             font-weight: bold;
         }
-
+        
         #loading-overlay {
             display: none;
             position: fixed;
@@ -137,7 +139,7 @@
                 transform: rotate(360deg);
             }
         }
-    </style> 
+    </style>
     <script src="https://cdn.jsdelivr.net/gh/neocotic/qrious/dist/qrious.min.js"></script>
 </head>
 <body>
@@ -148,10 +150,13 @@
         <input type="text" id="text-input"><br><br>
         <button type="button" id="myButton">إطبع الكرت</button>
     </form>
+    
     <div id="click-count-box"></div>
+    
     <div>
         <img id="image-preview" src="IMG-20241124-WA0005.jpg" alt="Image Preview" onload="setImageDimensions()">
     </div>
+
     <button id="share-button" style="display: none;" onclick="openImageInNewTab()">Share via WhatsApp</button>
     
     <div id="loading-overlay">
@@ -165,7 +170,7 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { limitToLast, getDatabase, get, ref, set, query, push } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+        import { getDatabase, get, ref, set, push } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyASTjzT4aArcJGFOXjmpgcisJR0NTYP8Sc",
@@ -184,19 +189,14 @@
         const insertBtn = document.getElementById("myButton");
 
         function insertData() {
-            if (nodeCount > 120) {
-                return;
-            }
-
+            if (nodeCount > 120) return;
             const guestNameValue = guestName.value.trim();
-
             if (!guestNameValue) {
                 alert("Please enter a valid guest name");
                 return;
             }
 
             const randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000);
-
             const dataToInsert = {
                 الإسم: guestNameValue,
                 رقم_عشوائي: randomFourDigitNumber.toString()
@@ -206,12 +206,8 @@
             const newKey = push(databaseRef, dataToInsert).key;
 
             set(ref(database, newKey), dataToInsert)
-                .then(() => {
-                    alert("Data added successfully");
-                })
-                .catch((error) => {
-                    alert(error.message);
-                });
+                .then(() => alert("Data added successfully"))
+                .catch((error) => alert(error.message));
         }
 
         document.getElementById("myButton").addEventListener("click", insertData);
@@ -294,7 +290,32 @@
             function hideLoadingOverlay() {
                 document.getElementById('loading-overlay').style.display = 'none';
             }
+showLoadingOverlay();
 
-            showLoadingOverlay();
+            // Simulate a delay to hide the loading overlay
+            setTimeout(function() {
+                hideLoadingOverlay();
+            }, 3000); // Adjust the timeout duration as needed
+        };
 
-            document.getElementById
+        // Function to set image dimensions
+        function setImageDimensions() {
+            const image = document.getElementById("image-preview");
+            image.onload = function () {
+                imageWidth = image.width;
+                imageHeight = image.height;
+            };
+        }
+
+        // Function to open the image in a new tab
+        function openImageInNewTab() {
+            const image = document.getElementById("image-preview");
+            const imageURL = image.src;
+            const newTab = window.open();
+            newTab.document.write('<html><head><title>Image</title></head><body style="text-align: center;"><img src="' + imageURL + '" style="max-width: 100%; height: auto;"></body></html>');
+            newTab.document.close();
+        }
+    </script>
+</body>
+</html>
+            
