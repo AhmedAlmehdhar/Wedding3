@@ -1,644 +1,260 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
-    <title>كروت حفل زفاف </title>
-    <style>
-  
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f7f7f7;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>كروت حفل زفاف</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+      background-color: #f7f7f7;
+    }
+    h1 { text-align: center; margin-bottom: 15px; font-size: 1.5em; }
+    form {
+      max-width: 400px;
+      margin: 0 auto 20px auto;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    label { display: block; font-weight: bold; margin-bottom: 8px; font-size: 0.9em; }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 1em;
+    }
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 8px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1em;
+    }
+    #myButton { background-color: #4CAF50; color: #fff; }
+    #myButton:hover:enabled { background-color: #45a049; }
+    #myButton:disabled { background-color: #9ccc9c; cursor: not-allowed; }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
+    #image-preview { max-width:100%; margin-top:15px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 0.9em; }
+    th, td { border:1px solid #ddd; padding:8px; text-align:center; word-break: break-word; }
+    th { background:#4CAF50; color:white; }
+    .delete-button, .whatsapp-button { padding:5px 8px; border:none; border-radius:4px; cursor:pointer; font-size:0.8em; }
+    .delete-button { background:#dc3545; color:white; }
+    .delete-button:hover { background:#c82333; }
+    .whatsapp-button { background:#25D366; color:white; margin-top:3px; }
+    .whatsapp-button:hover { background:#128C7E; }
 
-        form {
-            max-width: 400px;
-            margin: 0 auto;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
+    /* Notification CSS */
+    .notification {
+      position: fixed;
+      top: -80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #4CAF50;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      font-size: 1em;
+      font-weight: bold;
+      z-index: 10000;
+      transition: top 0.5s ease, opacity 0.5s ease;
+      opacity: 0;
+    }
+    .notification.show { top: 20px; opacity: 1; }
+    .notification.error { background-color: #dc3545; }
 
-        label {
-            display: block;
-            font-weight: bold;
-            margin-bottom: 10px;
-        }
+    /* Modern uploading animation */
+    .uploading-animation {
+      display: none;
+      text-align: center;
+      margin-top: 15px;
+    }
+    .uploading-animation span {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin: 0 5px;
+      background: #4CAF50;
+      border-radius: 50%;
+      animation: bounce 0.6s infinite alternate;
+    }
+    .uploading-animation span:nth-child(2) { animation-delay: 0.2s; }
+    .uploading-animation span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { to { transform: translateY(-15px); opacity: 0.6; } }
 
-        input[type="text"] {
-            width: 100%;
-            box-sizing: border-box;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            margin-bottom: 10px;
-        }
-
-        button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #4CAF50;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        button:hover {
-            background-color: #45a049;
-        }
-
-        #image-preview {
-            max-width: 100%;
-            height: auto;
-            margin-top: 20px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        #click-count-box {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f2f2f2;
-            text-align: center;
-        }
-
-        #share-button {
-            display: none;
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        #reset-button {
-            display: none;
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            background-color: #dc3545;
-            color: #fff;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-        
-        
-        #loading-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
-        .lds-ring {
-            display: inline-block;
-            position: relative;
-            width: 80px;
-            height: 80px;
-        }
-
-        .lds-ring div {
-            box-sizing: border-box;
-            display: block;
-            position: absolute;
-            width: 64px;
-            height: 64px;
-            margin: 8px;
-            border: 8px solid #3498db;
-            border-radius: 50%;
-            animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
-            border-color: #3498db transparent transparent transparent;
-        }
-
-        @keyframes lds-ring {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-    </style> 
-    <script src="https://cdn.jsdelivr.net/gh/neocotic/qrious/dist/qrious.min.js"></script>
+    @media (max-width: 500px) {
+      h1 { font-size: 1.2em; }
+      form { padding: 10px; }
+      input, button { font-size: 0.9em; padding:8px; }
+      th, td { font-size:0.8em; padding:6px; }
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/gh/neocotic/qrious/dist/qrious.min.js"></script>
 </head>
 <body>
-    <h1>موقع كروت الافراح</h1>
-    
+  <h1>موقع كروت الأفراح</h1>
 
+  <!-- Notification container -->
+  <div id="notification" class="notification"></div>
 
-    <form id="my-form">
-        <label for="text-input">Enter text:</label>
-        <input type="text" id="text-input"><br><br>
-        
- <button type="button" id="myButton">إطبع الكرت</button>
-        
-    </form>
- <div id="click-count-bxox"></div>
-    
-    <div>
-        <img id="image-preview" src="IMG-20241124-WA0005.jpg" alt="Image Preview" onload="setImageDimensions()">
+  <form id="my-form">
+    <label for="text-input">أدخل اسم الضيف:</label>
+    <input type="text" id="text-input" placeholder="مثال: أحمد">
+    <button type="button" id="myButton">إطبع الكرت</button>
+    <div id="uploading-animation" class="uploading-animation">
+      <span></span><span></span><span></span>
     </div>
+  </form>
 
-   
+  <img id="image-preview" src="3.jpg" alt="Image Preview">
 
-    <button id="share-button" style="display: none;" onclick="openImageInNewTab()">Share via WhatsApp</button>
-    
-    <div id="loading-overlay">
-    <div class="lds-ring">
-        <div></div>
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
-</div>
+  <h2>عدد الضيوف الحالي: <span id="nodeCount">0</span></h2>
+  <div id="output"></div>
 
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    import { getDatabase, ref, set, push, get, onValue, remove } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
 
-    <script type="module">
-        
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { limitToLast,getDatabase, get, ref, set, query, push } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
+    const firebaseConfig = {
+      apiKey: "AIzaSyCuZVUBIA0oDQuPzRUQbMJCJZK32zmVaVQ",
+      authDomain: "final-draft-8f39d.firebaseapp.com",
+      databaseURL: "https://final-draft-8f39d-default-rtdb.firebaseio.com",
+      projectId: "final-draft-8f39d",
+      storageBucket: "final-draft-8f39d.appspot.com",
+      messagingSenderId: "994437210054",
+      appId: "1:994437210054:web:628c741b81ccf741175cc7"
+    };
 
-          // Your web app's Firebase configuration
-  const firebaseConfig = {
-    apiKey: "AIzaSyASTjzT4aArcJGFOXjmpgcisJR0NTYP8Sc",
-    authDomain: "wedding2-dfbb0.firebaseapp.com",
-    databaseURL: "https://wedding2-dfbb0-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "wedding2-dfbb0",
-    storageBucket: "wedding2-dfbb0.appspot.com",
-    messagingSenderId: "882345158924",
-    appId: "1:882345158924:web:e70367a38f8c05eb360129"
-        };
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase();
+    const guestNameInput = document.getElementById("text-input");
+    const insertBtn = document.getElementById("myButton");
+    const uploadingAnim = document.getElementById("uploading-animation");
+    let randomFourDigitNumber;
 
-        // Get references to the HTML elements
-       
-        const guestName = document.getElementById("text-input");
-        const insertBtn = document.getElementById("myButton");
-        
-               // Function to insert data into Firebase
-        function insertData() {
-        
-    // Get the guest name value from the input field
-    if (nodeCount > 120) {
-        ;
-        return;
+    function showNotification(message, type="success") {
+      const notif = document.getElementById("notification");
+      notif.textContent = message;
+      notif.className = `notification show ${type}`;
+      setTimeout(() => { notif.className = "notification"; }, 3000);
     }
 
-    const guestNameValue = guestName.value.trim();
+    insertBtn.addEventListener("click", async () => {
+      const guestNameValue = guestNameInput.value.trim();
+      if (!guestNameValue) { showNotification("من فضلك أدخل اسم صحيح", "error"); return; }
 
-    // Input validation
-    if (!guestNameValue) {
-        alert("Please enter a valid guest name");
-        return;
+      randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000).toString();
+      const dataToInsert = { الإسم: guestNameValue, رقم_عشوائي: randomFourDigitNumber };
+      const newKey = push(ref(database), dataToInsert).key;
+
+      // Show uploading animation and disable button
+      insertBtn.disabled = true;
+      uploadingAnim.style.display = "block";
+
+      try {
+        await set(ref(database, newKey), dataToInsert);
+        const cardURL = await uploadCardToBBImg();
+        await set(ref(database, `${newKey}/link`), cardURL);
+        showNotification("تمت إضافة الضيف بنجاح", "success");
+        readData();
+        updateNodeCount();
+        guestNameInput.value = "";
+      } catch(e) {
+        showNotification(e.message, "error");
+      } finally {
+        insertBtn.disabled = false;
+        uploadingAnim.style.display = "none";
+      }
+    });
+
+    async function uploadCardToBBImg() {
+      const image = document.getElementById("image-preview");
+      const canvas = document.createElement("canvas");
+      canvas.width = image.naturalWidth;
+      canvas.height = image.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(image, 0, 0);
+      ctx.font = "40px Arial"; ctx.fillStyle = "red"; ctx.textAlign = "center";
+      ctx.fillText(randomFourDigitNumber, canvas.width/2, canvas.height/2 - 40);
+      ctx.fillText(guestNameInput.value, canvas.width/2, canvas.height/2 + 40);
+      const qr = new QRious({ value: randomFourDigitNumber, size: 126, background:'transparent' });
+      ctx.drawImage(qr.canvas, canvas.width/2 - 64, canvas.height - 128);
+
+      const base64Image = canvas.toDataURL().split(',')[1];
+      const formData = new FormData();
+      formData.append('image', base64Image);
+      const apiKey = '97c60166127ae9258012f463e09b1e2d';
+      const response = await fetch(`https://api.imgbb.com/1/upload?key=${apiKey}`, { method: 'POST', body: formData });
+      const data = await response.json();
+      return data.data.url;
     }
 
-    // Generate a random 4-digit number
-    const randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000);
+    function readData() {
+      onValue(ref(database), (snapshot) => {
+        const data = snapshot.val();
+        const outputDiv = document.getElementById("output");
+        outputDiv.innerHTML = "";
+        if (!data) return;
 
-    // Combine the guest name and the random number
-    const dataToInsert = {
-    الإسم: guestNameValue,
-    رقم_عشوائي: randomFourDigitNumber.toString() // Use the string representation
-};
-
-    // Get the reference to the database
-    const databaseRef = ref(database);
-
-    // Push the combined data directly
-    const newKey = push(databaseRef, dataToInsert).key;
-
-    // Alert success or error
-    set(ref(database, newKey), dataToInsert)
-        .then(() => {
-            alert("Data added successfully");
-        })
-        .catch((error) => {
-            alert(error.message);
+        const table = document.createElement("table");
+        const thead = document.createElement("thead");
+        const headerRow = document.createElement("tr");
+        ["رقم الكرت", "الإسم", "رابط الكرت", "حذف", "واتساب"].forEach(h => {
+          const th = document.createElement("th");
+          th.textContent = h;
+          headerRow.appendChild(th);
         });
-}
+        thead.appendChild(headerRow);
+        table.appendChild(thead);
 
- 
-  
+        const tbody = document.createElement("tbody");
+        Object.entries(data).forEach(([key, val], index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td>${index+1}</td><td>${val.الإسم}</td><td><a href='${val.link || "#"}' target='_blank'>عرض</a></td>`;
 
- 
-document.getElementById("myButton").addEventListener("click", insertData);    
-     
-       
-    
-   // Declare nodeCount as a global variable
-var nodeCount;
+          const delBtn = document.createElement("button");
+          delBtn.textContent = "حذف";
+          delBtn.className = "delete-button";
+          delBtn.onclick = () => remove(ref(database, key));
+          const tdDel = document.createElement("td"); tdDel.appendChild(delBtn);
+          row.appendChild(tdDel);
 
-// ...
+          const whatsappBtn = document.createElement("button");
+          whatsappBtn.textContent = "واتساب";
+          whatsappBtn.className = "whatsapp-button";
+          whatsappBtn.onclick = () => { if(val.link) window.open(`https://wa.me/?text=${encodeURIComponent('كرت الدعوة: '+val.link)}`,'_blank'); };
+          const tdWhats = document.createElement("td"); tdWhats.appendChild(whatsappBtn);
+          row.appendChild(tdWhats);
 
-const rootRef = ref(database);
+          tbody.appendChild(row);
+        });
 
-// Retrieve data and count nodes
-get(rootRef)
-    .then(snapshot => {
-        nodeCount = snapshot.size; // Update the global nodeCount
-        
-    })
-    .catch(error => {
-        console.error("Error reading data: ", error);
-    });
-
-function overlayText() {
-    // Check if nodeCount is above a certain threshold (you can adjust this threshold as needed)
-    if (nodeCount > 120) {
-        alert("You have reached the maximum number of cards.");
-        return;
+        table.appendChild(tbody);
+        outputDiv.appendChild(table);
+      });
     }
 
-    var textInput = document.getElementById("text-input").value;
-
-    if (textInput.trim() === "") {
-        alert("Please enter the text before overlaying.");
-        return;
+    async function updateNodeCount() {
+      const snapshot = await get(ref(database));
+      document.getElementById('nodeCount').textContent = snapshot.size || 0;
     }
 
-    // Generate a random 4-digit number
-    const randomFourDigitNumber = Math.floor(1000 + Math.random() * 9000);
-
-    var image = document.getElementById("image-preview");
-
-    // Remove previously generated image
-    var prevOutput = document.getElementById("output-image");
-    if (prevOutput) {
-        prevOutput.remove();
-    }
-
-    var canvas = document.createElement("canvas");
-    canvas.width = imageWidth;
-    canvas.height = imageHeight;
-
-    var context = canvas.getContext("2d");
-    context.drawImage(image, 0, 0);
-    context.font = "30px Arial";
-    context.fillStyle = "black";
-    context.textAlign = "center";
-
-    
-
-    // Generate QR code
-    // Generate QR code with transparent background
-const qrCode = new QRious({
-    element: document.getElementById("image-preview"),
-    value: randomFourDigitNumber.toString(), // Use the string representation
-    size: 126,
-    background: 'transparent',
-});
-    
-    
-    // Draw QR code onto the canvas
-    
-    
-
-    // Display the user-entered text
-    context.fillText(textInput, canvas.width / 2, canvas.height/1.42);
-
-    var imageDataURL = canvas.toDataURL();
-
-    var newTab = window.open();
-    newTab.document.write('<html><head><title>Image with Overlayed Text</title></head><body style="text-align: center;"><img src="' + imageDataURL + '"></body></html>');
-    newTab.document.close();
-
-    // Scroll to the bottom of the page
-    window.scroll({
-        top: document.body.scrollHeight,
-        behavior: 'smooth'
-    });
-
-    // Reload the page
-    location.href = location.href;
-
-    return false; // Prevent the form from resetting
-}
-document.getElementById("myButton").addEventListener("click", overlayText);
-     window.onload = function () {
-            // Function to show the loading overlay
-            function showLoadingOverlay() {
-                document.getElementById('loading-overlay').style.display = 'flex';
-            }
-
-            // Function to hide the loading overlay
-            function hideLoadingOverlay() {
-                document.getElementById('loading-overlay').style.display = 'none';
-            }
-
-            // Call showLoadingOverlay when the page starts loading
-            showLoadingOverlay();
-
-            // Call hideLoadingOverlay when the page has finished loading
-            document.getElementById('image-preview').addEventListener('load', hideLoadingOverlay);
-            setTimeout(hideLoadingOverlay, 600); // Adjust the timeout value as needed (in milliseconds)
-        };
-        </script>
-        <script>
-            
-   
-       
-   
-           
-       
-     
-        var imageWidth;
-        var imageHeight;
-
-        function setImageDimensions() {
-            var image = document.getElementById("image-preview");
-            imageWidth = image.naturalWidth;
-            imageHeight = image.naturalHeight;
-        }
-
-        window.onload = function() {
-            ;
-        };
-            
-     
-   
-    
-    </script>
-
-    <button id="reset-button" onclick="resetClicks()">Reset Clicks</button>
-
-
-  
-</html>
-
-
-
-           
-  
- 
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-   
-    <title>Firebase Node Count</title>
-</head>
-<body>
-    <h1>عدد الضيوف الحالي : <span id="nodeCount"></span></h1>
-
-<script type="module">
-  
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { limitToLast,getDatabase, get, ref, set, query } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-    
-        // Initialize Firebase with your configuration
-        const firebaseConfig = {
-    apiKey: "AIzaSyASTjzT4aArcJGFOXjmpgcisJR0NTYP8Sc",
-    authDomain: "wedding2-dfbb0.firebaseapp.com",
-    databaseURL: "https://wedding2-dfbb0-default-rtdb.asia-southeast1.firebasedatabase.app",
-    projectId: "wedding2-dfbb0",
-    storageBucket: "wedding2-dfbb0.appspot.com",
-    messagingSenderId: "882345158924",
-    appId: "1:882345158924:web:e70367a38f8c05eb360129"
-        };
-
-        const app = initializeApp(firebaseConfig);
-
-        // Reference to your Firebase Realtime Database
-      
-        const database = getDatabase(app);
-
-        // Reference to the root node
-        const rootRef = ref(database);
-
-        // Retrieve data and count nodes
-        get(rootRef)
-    .then(snapshot => {
-        const nodeCount = snapshot.size; // Updated line
-        document.getElementById('nodeCount').innerText = nodeCount;
-    })
-    .catch(error => {
-        console.error("Error reading data: ", error);
-    });
-    
-        </script>
-</body>
-</html> 
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Firebase Realtime Database Example</title>
-    <style>
-        /* Your CSS styles here */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            overflow: hidden;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-            font-family: Arial, sans-serif;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 12px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #4CAF50;
-            color: white;
-        }
-
-        tbody tr:hover {
-            background-color: #f5f5f5;
-        }
-
-        .delete-button {
-            background-color: #dc3545;
-            color: #fff;
-            border: none;
-            padding: 6px 10px;
-            cursor: pointer;
-            border-radius: 4px;
-        }
-
-        .delete-button:hover {
-            background-color: #c82333;
-        }
-    </style>
-</head>
-<body>
-    <!-- Display the data here -->
-    <!-- For example, create a div with id "output" -->
-    <div id="output"></div>
-
-    
-
-    <!-- Button to trigger the readData function -->
-    <button onclick="readData()">قائمة الضيوف</button>
-
-    <!-- Add Firebase SDK -->
-    <script type="module">
-        // Import the functions you need from the SDKs
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
-        import { getDatabase, ref, onValue, remove } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-database.js";
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyASTjzT4aArcJGFOXjmpgcisJR0NTYP8Sc",
-            authDomain: "wedding2-dfbb0.firebaseapp.com",
-            databaseURL: "https://wedding2-dfbb0-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "wedding2-dfbb0",
-            storageBucket: "wedding2-dfbb0.appspot.com",
-            messagingSenderId: "882345158924",
-            appId: "1:882345158924:web:e70367a38f8c05eb360129"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-
-        // Reference to the root of your database
-        const database = getDatabase();
-
-        // Function to read data from the database and populate the table
-        window.readData = function () {
-        
-            // Reference to the root of your data
-            const dataRef = ref(database);
-
-            // Read data from the database
-            onValue(dataRef, (snapshot) => {
-                // Get data from the snapshot
-                const data = snapshot.val();
-
-                if (!data || typeof data !== 'object') {
-                    console.error('Invalid data format:', data);
-                    return;
-                }
-
-                // Process or display the data as needed
-                const outputDiv = document.getElementById('output');
-
-                // Convert object keys to an array
-                const parentNodes = Object.keys(data);
-
-                // Check if parentNodes is a non-empty array
-                if (parentNodes.length > 0) {
-                    // Create a table only if parentNodes is a non-empty array
-                    const table = document.createElement('table');
-                    table.border = '1';
-
-                    // Create table header
-                    const thead = document.createElement('thead');
-                    const headerRow = document.createElement('tr');
-
-                    // Add an extra th for the index
-                    const indexTh = document.createElement('th');
-                    indexTh.textContent = 'رقم الكرت';
-                    headerRow.appendChild(indexTh);
-
-                    // Assuming all parent nodes have the same structure, using the first one for other headers
-                    const firstParentNode = data[parentNodes[0]];
-                    Object.keys(firstParentNode).forEach(header => {
-                        const th = document.createElement('th');
-                        th.textContent = header;
-                        headerRow.appendChild(th);
-                    });
-
-                    // Add an extra th for the delete button
-                    const deleteTh = document.createElement('th');
-                    deleteTh.textContent = 'حذف';
-                    headerRow.appendChild(deleteTh);
-
-                    thead.appendChild(headerRow);
-                    table.appendChild(thead);
-
-                    // Create table body
-                    const tbody = document.createElement('tbody');
-
-                    // Iterate through parent nodes and create rows for each
-                    parentNodes.forEach((parentNode, index) => {
-                        const row = document.createElement('tr');
-
-                        // Add index column
-                        const indexTd = document.createElement('td');
-                        indexTd.textContent = index + 1; // Adding 1 to start indexing from 1
-                        row.appendChild(indexTd);
-
-                        const parentNodeData = data[parentNode];
-                        Object.values(parentNodeData).forEach(value => {
-                            const td = document.createElement('td');
-                            td.textContent = value;
-                            row.appendChild(td);
-                        });
-
-                        // Add delete button
-                        const deleteButton = document.createElement('button');
-                        deleteButton.textContent = 'حذف';
-                        deleteButton.onclick = function () {
-                            deleteData(parentNode);
-                        };
-
-                        const tdDelete = document.createElement('td');
-                        tdDelete.appendChild(deleteButton);
-                        row.appendChild(tdDelete);
-
-                        tbody.appendChild(row);
-                    });
-
-                    table.appendChild(tbody);
-
-                    // Clear previous content and append the table
-                    outputDiv.innerHTML = '';
-                    outputDiv.appendChild(table);
-                } else {
-                    console.error('Empty array:', parentNodes);
-                }
-            });
-        }
-
-        // Function to delete data from the database
-        function deleteData(parentNode) {
-            const dataRef = ref(database, parentNode);
-            remove(dataRef)
-                .then(() => {
-                    console.log('Data deleted successfully.');
-                    location.reload(); // Refresh the page
-                })
-                .catch(error => {
-                    console.error('Error deleting data:', error);
-                });
-        }
-            
-        // Call readData() when the window loads
-        window.onload = function() {
-            readData();
-        };
-    </script>
+    window.onload = () => {
+      readData();
+      updateNodeCount();
+    };
+  </script>
 </body>
 </html>
